@@ -7,7 +7,8 @@ import com.hopcape.toadexample.example.data.ProfileRepository
 
 class ProfileViewModel(
     private val repository: ProfileRepository,
-    private val preferencesRepository: PreferencesRepository
+    private val preferencesRepository: PreferencesRepository,
+    initialActions: List<ProfileAction> = emptyList()
 ): ToadViewModel<ProfileUiState, ProfileEvent>(ProfileUiState.Loading){
     override val dependencies = ProfileActionDependencies(
         profileRepository = repository,
@@ -15,5 +16,8 @@ class ProfileViewModel(
         coroutineScope = viewModelScope
     )
 
+    init {
+        dispatchAll(initialActions)
+    }
     fun runAction(action: ProfileAction) = dispatch(action)
 }
